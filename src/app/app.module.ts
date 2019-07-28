@@ -1,15 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, JsonpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { TextComponent } from './text.component';
-import {MdButtonModule, MdToolbarModule} from "@angular/material";
-import {DataService} from "./data.service";
+import {DataService} from './data.service';
 import { ButtonsComponent } from './buttons.component';
 import {DrumsService} from './drums.service';
+import {MatButtonModule, MatToolbarModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,11 +19,13 @@ import {DrumsService} from './drums.service';
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
+    HttpClientJsonpModule,
     BrowserAnimationsModule,
-    MdButtonModule,
-    MdToolbarModule,
-    JsonpModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatInputModule,
     FormsModule
   ],
   providers: [DataService, DrumsService],

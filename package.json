@@ -6,11 +6,12 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "db": "json-server db.json"
+    "mig": "rxjs-5-to-6-migrate -p src/tsconfig.app.json"
   },
   "private": true,
   "dependencies": {
     "@angular/animations": "^8.1.3",
+    "@angular/cdk": "^8.1.1",
     "@angular/common": "^8.1.3",
     "@angular/compiler": "^8.1.3",
     "@angular/core": "^8.1.3",
@@ -21,9 +22,9 @@
     "@angular/router": "^8.1.3",
     "core-js": "^2.4.1",
     "rxjs": "^6.5.2",
+    "rxjs-compat": "^6.0.0-rc.0",
     "tslib": "^1.9.0",
-    "zone.js": "~0.9.1",
-    "rxjs-compat": "^6.0.0-rc.0"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.801.2",
@@ -42,8 +43,8 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.0",
-    "ts-node": "~2.0.0",
-    "tslint": "~4.5.0",
+    "ts-node": "~3.3.0",
+    "tslint": "~5.18.0",
     "typescript": "~3.4.5"
   }
 }

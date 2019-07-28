@@ -8,34 +8,33 @@ import { DataService } from './data.service';
     #syncButton {
       margin-left: auto;
     }
-    
     `
   ],
   template: `
 
-    <form ng-if="spreadsheetUrl" 
+    <form *ngIf="!synced"
           id="setupForm"
           class="example-form">
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Spreadsheet URL" [(ngModel)]="spreadsheetUrl">
+          <input name="spreadsheetID" matInput placeholder="Spreadsheet ID" [(ngModel)]="spreadsheetID">
         </mat-form-field>
 
-        <button id="syncButton" md-raised-button
+        <button id="syncButton" mat-raised-button
                 color="primary"
                 (click)="syncData()">Sync Data
         </button>
-      
+
     </form>
-    <span ng-if="spreadsheetUrl" 
+    <span *ngIf="synced"
           id="raffle-page">
-      <md-toolbar color="primary">
+      <mat-toolbar color="primary">
         <span>WalkMe Tech Talk Raffle </span>
 
-        <button id="syncButton" md-raised-button
+        <button id="syncButton" mat-raised-button
                 color="primary"
                 (click)="syncData()">Sync Data
         </button>
-      </md-toolbar>
+      </mat-toolbar>
 
       <ngil-text [names]="names"
                 [maxIterations]="150"
@@ -46,14 +45,16 @@ import { DataService } from './data.service';
 })
 export class AppComponent {
   names: string[];
-  spreadsheetUrl: string;
+  synced = false;
+  spreadsheetID: string;
 
   constructor(private dataService: DataService) {}
-  
+
   syncData() {
-    this.dataService.sync();
+    this.dataService.sync(this.spreadsheetID);
     this.dataService.names.subscribe(names => {
       this.names = names;
+      this.synced = true;
     });
   }
 }
