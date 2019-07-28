@@ -34,6 +34,16 @@ export class TextComponent {
 
   @Input() maxIterations: number;
   @Input() speed: number;
+  @Input() set names(val: string[]) {
+    this._names = val;
+    this.init();
+  }
+
+  get names(): string[] {
+    return this._names;
+  }
+
+  private _names: string[];
 
   public name: string;
   public wowEffect: boolean;
@@ -43,17 +53,12 @@ export class TextComponent {
   private covered: string | any | void;
   private timer: any;
   private currentIteration: any;
-  private names: string[];
   private lastRevealIteration: number;
 
   private round: number;
 
   constructor(private dataService: DataService, private drumsService: DrumsService) {
     this.round = 0;
-    dataService.names.subscribe(result => {
-      this.names = result.json();
-      this.init();
-    });
   }
 
   get nameArr() {
@@ -66,6 +71,9 @@ export class TextComponent {
   }
 
   public init() {
+    if (!this.names || this.names.length === 0) {
+      return;
+    }
     this.currentIteration = 0;
     this.running          = false;
 
@@ -80,6 +88,9 @@ export class TextComponent {
   }
 
   public start() {
+    if (this.names.length === 0) {
+      return;
+    }
     this.running = true;
     this.timer   = setInterval(this.decode.bind(this), this.speed);
     this.round++;
