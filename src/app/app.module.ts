@@ -8,7 +8,15 @@ import { TextComponent } from './text.component';
 import {DataService} from './data.service';
 import { ButtonsComponent } from './buttons.component';
 import {DrumsService} from './drums.service';
-import {MatButtonModule, MatToolbarModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatToolbarModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatListModule,
+  MatIconModule,
+  MatCardModule
+} from '@angular/material';
 import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
 import { WinnersListComponent } from './winners-list/winners-list.component';
 
@@ -28,8 +36,12 @@ import { WinnersListComponent } from './winners-list/winners-list.component';
     MatToolbarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
+    MatListModule,
+    MatCardModule,
     FormsModule
   ],
+  exports: [WinnersListComponent],
   providers: [DataService, DrumsService],
   bootstrap: [AppComponent]
 })

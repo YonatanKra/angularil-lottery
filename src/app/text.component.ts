@@ -29,7 +29,7 @@ const replacements = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvw
                   (start)="start()"
                   (init)="init()"></ngil-buttons>
 
-    <ngil-winners-list [list]="winners"></ngil-winners-list>
+    <ngil-winners-list [winners]="winners"></ngil-winners-list>
   `,
 })
 export class TextComponent {
