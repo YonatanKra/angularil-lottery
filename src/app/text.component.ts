@@ -26,8 +26,7 @@ const replacements = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvw
              *ngFor="let c of nameArr">{{ c }}</span></p>
 
     <ngil-buttons *ngIf="!running"
-                  (start)="start()"
-                  (init)="init()"></ngil-buttons>
+                  (start)="start()"></ngil-buttons>
 
     <ngil-winners-list [winners]="winners"></ngil-winners-list>
   `,
@@ -44,8 +43,8 @@ export class TextComponent {
 
   @Output() winner = new EventEmitter();
 
-  get names(): string[] {
-    return this._names;
+  get names() {
+    return this._names.filter(item => !this.winners.includes(item));
   }
 
   private _names: string[];
@@ -97,6 +96,7 @@ export class TextComponent {
     if (this.names.length === 0) {
       return;
     }
+    this.init();
     this.running = true;
     this.timer = setInterval(this.decode.bind(this), this.speed);
     this.round++;

@@ -7,17 +7,11 @@ import {Component, Output, EventEmitter} from '@angular/core';
               color="primary"
               (click)="start.emit()">start
       </button>
-
-      <button mat-raised-button
-              color="secondary"
-              (click)="init.emit()">init
-      </button>
   `,
   styles: []
 })
 export class ButtonsComponent  {
 
   @Output() start = new EventEmitter<void>();
-  @Output() init = new EventEmitter<void>();
 
 }
