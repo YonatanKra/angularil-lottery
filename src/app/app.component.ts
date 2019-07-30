@@ -8,6 +8,9 @@ import { DataService } from './data.service';
     #syncButton {
       margin-left: auto;
     }
+      .logo {
+        max-height: 80px;
+      }
     `
   ],
   template: `
@@ -15,6 +18,7 @@ import { DataService } from './data.service';
     <form *ngIf="!synced"
           id="setupForm"
           class="example-form">
+      <div><img class="logo" src="../assets/Logo.jpg"></div>
         <mat-form-field class="example-full-width">
           <input name="spreadsheetID" matInput placeholder="Spreadsheet ID" [(ngModel)]="spreadsheetID">
         </mat-form-field>
@@ -28,8 +32,8 @@ import { DataService } from './data.service';
     <span *ngIf="synced"
           id="raffle-page">
       <mat-toolbar color="primary">
-        <span>WalkMe Tech Talk Raffle </span>
-
+        <div><img src="../assets/Logo.jpg" class="logo"></div>
+        <span> Raffle </span>
         <button id="syncButton" mat-raised-button
                 color="primary"
                 (click)="syncData()">Sync Data
