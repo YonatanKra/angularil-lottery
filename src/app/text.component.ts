@@ -1,13 +1,13 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DataService} from './data.service';
-import {DrumsService} from "./drums.service";
+import {DrumsService} from './drums.service';
 
 const hebrewLetters = 'אבגדהוזחטיכךלמםנןסעפףצץקרשת';
-const replacements  = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_${hebrewLetters}`;
+const replacements = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz%!@&*#_${hebrewLetters}`;
 
 @Component({
   selector: 'ngil-text',
-  styles  : [`
+  styles: [`
     p {
       font-family: Courier;
       letter-spacing: 9px;
@@ -28,16 +28,21 @@ const replacements  = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuv
     <ngil-buttons *ngIf="!running"
                   (start)="start()"
                   (init)="init()"></ngil-buttons>
+
+    <ngil-winners-list [list]="winners"></ngil-winners-list>
   `,
 })
 export class TextComponent {
 
   @Input() maxIterations: number;
   @Input() speed: number;
+
   @Input() set names(val: string[]) {
     this._names = val;
     this.init();
   }
+
+  @Output() winner = new EventEmitter();
 
   get names(): string[] {
     return this._names;
@@ -45,10 +50,11 @@ export class TextComponent {
 
   private _names: string[];
 
+  public winners = [];
   public name: string;
-  public wowEffect: boolean;
 
   private running: boolean;
+  private selectedNumber: number;
   private selected: string;
   private covered: string | any | void;
   private timer: any;
@@ -75,14 +81,14 @@ export class TextComponent {
       return;
     }
     this.currentIteration = 0;
-    this.running          = false;
+    this.running = false;
 
     // generate random number and use it to select a winner
-    const randomNumber = Math.random() * this.names.length | 0;
-    this.selected      = this.names[randomNumber]['name'].toUpperCase();
+    const randomNumber = this.selectedNumber = Math.random() * this.names.length | 0;
+    this.selected = this.names[randomNumber]['name'].toUpperCase();
 
     this.covered = this.selected.replace(/([\s]|[\S])/g, '_');
-    this.name    = this.covered;
+    this.name = this.covered;
 
     this.lastRevealIteration = this.maxIterations;
   }
@@ -92,7 +98,7 @@ export class TextComponent {
       return;
     }
     this.running = true;
-    this.timer   = setInterval(this.decode.bind(this), this.speed);
+    this.timer = setInterval(this.decode.bind(this), this.speed);
     this.round++;
     if (this.name !== this.selected) {
       this.drumsService.startDrums();
@@ -101,12 +107,13 @@ export class TextComponent {
 
   private decode() {
     let newText = this.name.split('').map(this.changeLetter().bind(this)).join('');
-    newText     = this.currentIteration++ >= this.maxIterations ? this.selected : newText;
+    newText = this.currentIteration++ >= this.maxIterations ? this.selected : newText;
 
     if (newText === this.selected) {
       clearInterval(this.timer);
       this.running = false;
-      this.dataService.addWinner(this.selected);
+      this.winner.emit(this.names[this.selectedNumber]);
+      this.winners.push(this.names[this.selectedNumber]);
       this.drumsService.endDrums();
     }
     this.name = newText;

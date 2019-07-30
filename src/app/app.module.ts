@@ -10,12 +10,14 @@ import { ButtonsComponent } from './buttons.component';
 import {DrumsService} from './drums.service';
 import {MatButtonModule, MatToolbarModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 import {HttpClientJsonpModule, HttpClientModule} from '@angular/common/http';
+import { WinnersListComponent } from './winners-list/winners-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TextComponent,
-    ButtonsComponent
+    ButtonsComponent,
+    WinnersListComponent
   ],
   imports: [
     BrowserModule,

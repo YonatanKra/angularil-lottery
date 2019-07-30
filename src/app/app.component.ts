@@ -36,7 +36,8 @@ import { DataService } from './data.service';
         </button>
       </mat-toolbar>
 
-      <ngil-text [names]="names"
+      <ngil-text (winner)="onWin($event)"
+                 [names]="names"
                 [maxIterations]="150"
                 [speed]="75"></ngil-text>
     </span>
@@ -50,6 +51,9 @@ export class AppComponent {
 
   constructor(private dataService: DataService) {}
 
+  onWin(selected) {
+    this.dataService.addWinner(selected);
+  }
   syncData() {
     this.dataService.sync(this.spreadsheetID);
     this.dataService.names.subscribe(names => {
