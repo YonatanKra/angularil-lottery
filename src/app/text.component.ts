@@ -20,10 +20,80 @@ const replacements = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvw
       height: 73px;
       vertical-align: bottom;
     }
+    .nameRunning {
+      animation: .5s flip infinite;
+    }
+
+    .nameNotRunning {
+      animation: 1s bounce infinite;
+    }
+
+    @-webkit-keyframes bounce {
+      0%,20%,53%,80%,to {
+        -webkit-animation-timing-function: cubic-bezier(.215,.61,.355,1);
+        animation-timing-function: cubic-bezier(.215,.61,.355,1);
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0)
+      }
+
+      40%,43% {
+        -webkit-animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+        animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+        -webkit-transform: translate3d(0,-30px,0);
+        transform: translate3d(0,-30px,0)
+      }
+
+      70% {
+        -webkit-animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+        animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+        -webkit-transform: translate3d(0,-15px,0);
+        transform: translate3d(0,-15px,0)
+      }
+
+      90% {
+        -webkit-transform: translate3d(0,-4px,0);
+        transform: translate3d(0,-4px,0)
+      }
+    }
+    @keyframes flip {
+      0% {
+        -webkit-transform: perspective(400px) scaleX(1) translateZ(0) rotateY(-1turn);
+        transform: perspective(400px) scaleX(1) translateZ(0) rotateY(-1turn);
+        -webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out
+      }
+
+      40% {
+        -webkit-transform: perspective(400px) scaleX(1) translateZ(150px) rotateY(-190deg);
+        transform: perspective(400px) scaleX(1) translateZ(150px) rotateY(-190deg);
+        -webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out
+      }
+
+      50% {
+        -webkit-transform: perspective(400px) scaleX(1) translateZ(150px) rotateY(-170deg);
+        transform: perspective(400px) scaleX(1) translateZ(150px) rotateY(-170deg);
+        -webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in
+      }
+
+      90% {
+        -webkit-transform: perspective(400px) scale3d(.95,.95,.95) translateZ(0) rotateY(0deg);
+        transform: perspective(400px) scale3d(.95,.95,.95) translateZ(0) rotateY(0deg);
+        -webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in
+      }
+
+      to {
+        -webkit-transform: perspective(400px) scaleX(1) translateZ(0) rotateY(0deg);
+        transform: perspective(400px) scaleX(1) translateZ(0) rotateY(0deg);
+        -webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in
+      }
+    }
   `],
   template: `
-    <p><span class="single-char"
-             *ngFor="let c of nameArr">{{ c }}</span></p>
+    <p [ngClass]="{nameRunning: running, nameNotRunning: !running}">{{name}}</p>
 
     <ngil-buttons *ngIf="!running"
                   (start)="start()"></ngil-buttons>
@@ -75,6 +145,9 @@ export class TextComponent {
     return hebrewLetters.includes(this.selected[0]) ? splitName.reverse() : splitName;
   }
 
+  private randomName() {
+    return this.names[Math.random() * this.names.length | 0]['name'];
+  }
   public init() {
     if (!this.names || this.names.length === 0) {
       return;
@@ -85,9 +158,6 @@ export class TextComponent {
     // generate random number and use it to select a winner
     const randomNumber = this.selectedNumber = Math.random() * this.names.length | 0;
     this.selected = this.names[randomNumber]['name'].toUpperCase();
-
-    this.covered = this.selected.replace(/([\s]|[\S])/g, '_');
-    this.name = this.covered;
 
     this.lastRevealIteration = this.maxIterations;
   }
@@ -106,16 +176,16 @@ export class TextComponent {
   }
 
   private decode() {
-    let newText = this.name.split('').map(this.changeLetter().bind(this)).join('');
-    newText = this.currentIteration++ >= this.maxIterations ? this.selected : newText;
-
-    if (newText === this.selected) {
+    let newText = this.randomName();
+    if (this.currentIteration++ >= this.maxIterations) {
+      newText = this.selected;
       clearInterval(this.timer);
       this.running = false;
       this.winner.emit(this.names[this.selectedNumber]);
       this.winners.push(this.names[this.selectedNumber]);
       this.drumsService.endDrums();
     }
+
     this.name = newText;
   }
 

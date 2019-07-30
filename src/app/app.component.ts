@@ -42,8 +42,8 @@ import { DataService } from './data.service';
 
       <ngil-text (winner)="onWin($event)"
                  [names]="names"
-                [maxIterations]="150"
-                [speed]="75"></ngil-text>
+                [maxIterations]="30"
+                [speed]="350"></ngil-text>
     </span>
   `,
 
