@@ -2,8 +2,9 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 html{
-  background: #fff;
+  background: #fffff1;
   color: #000;
+  overflow: hidden;
 }
 
 body{

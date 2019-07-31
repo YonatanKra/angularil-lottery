@@ -14,12 +14,6 @@ const replacements = `0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvw
       font-size: 60px;
     }
 
-    .single-char {
-      display: inline-block;
-      width: 45px;
-      height: 73px;
-      vertical-align: bottom;
-    }
     .nameRunning {
       animation: .5s flip infinite;
     }
@@ -125,7 +119,6 @@ export class TextComponent {
   private running: boolean;
   private selectedNumber: number;
   private selected: string;
-  private covered: string | any | void;
   private timer: any;
   private currentIteration: any;
   private lastRevealIteration: number;
@@ -134,15 +127,6 @@ export class TextComponent {
 
   constructor(private dataService: DataService, private drumsService: DrumsService) {
     this.round = 0;
-  }
-
-  get nameArr() {
-    if (!this.name) {
-      return [];
-    }
-
-    const splitName = this.name.split('');
-    return hebrewLetters.includes(this.selected[0]) ? splitName.reverse() : splitName;
   }
 
   private randomName() {
@@ -177,6 +161,7 @@ export class TextComponent {
 
   private decode() {
     let newText = this.randomName();
+
     if (this.currentIteration++ >= this.maxIterations) {
       newText = this.selected;
       clearInterval(this.timer);
